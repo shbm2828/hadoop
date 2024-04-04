@@ -6,9 +6,10 @@ import json
 from pyotp import TOTP
 import csv
 from datetime import datetime
+from datetime import date
 
 global token
-
+today = str(date.today())
 
 TOTP("").now()
 key_path = r"D:\key"
@@ -36,7 +37,7 @@ def on_open(wsapp):
 
 def on_data(wsapp, message):
     try:
-        with open('april\\02_apr\\BN_CE_DATA.csv', 'a', newline='') as csvfile:
+        with open('april\\live_data\\BN_CE_DATA_'+today+'.csv', 'a', newline='') as csvfile:
               writer = csv.writer(csvfile)
               writer.writerow([datetime.fromtimestamp(message['exchange_timestamp']/1000)
                                .isoformat(), message["last_traded_price"]/100])
@@ -54,3 +55,4 @@ sws.on_data = on_data
 sws.on_error = on_error
 
 sws.connect()
+
